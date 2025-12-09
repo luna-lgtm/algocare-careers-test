@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Algocare Recruiting Wireframe + Growth Track Story</title>
+
+  <style>
+    :root{
+      --bg:#0b0c10; --card:#12141a; --muted:#9aa3b2; --text:#eef1f7;
+      --accent:#7c5cff; --accent2:#00d4a5; --line:#222634;
+      --radius:18px;
+      --maxw:1080px;
+    }
+    html{color-scheme:dark;}
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background:
+        radial-gradient(1200px 800px at 10% -10%, #191b22, transparent),
+        radial-gradient(1000px 700px at 110% 0%, #171428, transparent),
+        var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit; text-decoration:none;}
+    .wrap{max-width:var(--maxw); margin:0 auto; padding:24px 16px 120px;}
+    .pill{font-size:12px; padding:6px 10px; border:1px solid var(--line); border-radius:999px; color:#c6ccda;}
+    .muted{color:var(--muted);}
+    section{
+      background:var(--card); border:1px solid var(--line);
+      border-radius:var(--radius); padding:18px; margin-top:14px;
+    }
+
+    /* --- WIREFRAME PLACEHOLDERS --- */
+    .ph{
+      border:1px dashed #2f3444; background:#0f1118; border-radius:14px;
+      min-height:120px; display:flex; align-items:center; justify-content:center;
+      color:#848da0; font-size:14px; letter-spacing:.2px;
+    }
+    .ph.tall{min-height:220px;}
+    .ph.small{min-height:70px;}
+    .ph.circle{
+      width:56px; height:56px; border-radius:999px; min-height:auto;
+    }
+
+    /* --- HEADER / NAV --- */
+    header{
+      position:sticky; top:0; z-index:10;
+      background:rgba(11,12,16,.9); backdrop-filter: blur(6px);
+      border-bottom:1px solid var(--line);
+    }
+    .nav{
+      max-width:var(--maxw); margin:0 auto; padding:10px 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .nav-links{display:flex; gap:10px; font-size:14px; color:#cdd3e2;}
+    .nav-links a{padding:6px 8px; border-radius:8px;}
+    .nav-links a:hover{background:#11131a;}
+
+    /* --- HERO --- */
+    .hero{
+      display:grid; grid-template-columns:1.1fr .9fr; gap:14px; align-items:stretch;
+      background:
+        linear-gradient(180deg, rgba(124,92,255,.12), transparent 60%),
+        var(--card);
+      padding:22px;
+    }
+    @media (max-width:900px){ .hero{grid-template-columns:1fr;} }
+    .hero h1{font-size:36px; margin:0 0 8px;}
+    .hero .sub{font-size:18px; line-height:1.7;}
+    .cta-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+    .btn{
+      appearance:none; border:1px solid var(--line); background:#0e1016; color:var(--text);
+      padding:12px 14px; border-radius:999px; cursor:pointer; font-size:15px;
+      transition:.15s ease; font-weight:600;
+    }
+    .btn:hover{border-color:#3a4052; transform:translateY(-1px);}
+    .btn.primary{
+      background:linear-gradient(135deg, var(--accent), #5a8bff);
+      border:none; color:#fff;
+    }
+
+    /* --- BRIDGE --- */
+    .bridge{
+      display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center;
+    }
+    @media (max-width:720px){ .bridge{grid-template-columns:1fr;} }
+    .bridge h2{margin:0 0 6px; font-size:20px;}
+    .bridge p{margin:0; line-height:1.6;}
+
+    .gate{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      padding:14px; border-radius:14px; background:#0f1118; border:1px dashed #2f3444;
+      margin-top:12px;
+    }
+    .gate strong{font-size:16px;}
+    .gate small{color:var(--muted);}
+
+    /* ===========================
+       IDEA2 (GROWTH TRACK STORY)
+       =========================== */
+
+    .story-wrap{width:100%; max-width:980px; margin:0 auto;}
+    .story-header{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;}
+
+    .panel{
+      padding:18px; background:var(--card); border:1px solid var(--line);
+      border-radius:var(--radius);
+      position:relative;
+    }
+    .lead{color:var(--muted); line-height:1.7; margin:0;}
+    h1.story-h1{font-size:28px; margin:0 0 8px;}
+    h2.story-h2{font-size:20px; margin:8px 0 6px;}
+
+    .progress{display:flex; gap:6px; margin-top:12px;}
+    .dot{
+      flex:1; height:6px; border-radius:999px; background:#0f1118; border:1px solid var(--line);
+      position:relative; overflow:hidden;
+    }
+    .dot.on::after{
+      content:""; position:absolute; inset:0; background:linear-gradient(90deg, var(--accent), #5a8bff);
+    }
+
+    .step-badge{
+      font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid var(--line);
+      background:#0f1118; color:#cfd5e4; display:inline-block;
+    }
+
+    .stage{min-height:560px;}
+    .stage-view{display:none; animation:fadeIn .22s ease;}
+    .stage-view.active{display:block;}
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(4px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+
+    .choices{
+      display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px;
+    }
+    @media (max-width:720px){ .choices{grid-template-columns:1fr;} }
+
+    .choice{
+      background:#0f1118; border:1px solid var(--line); border-radius:14px; padding:14px;
+      cursor:pointer; transition:.15s ease; position:relative;
+      aspect-ratio: 2 / 1;
+      display:flex; flex-direction:column; justify-content:space-between;
+      text-align:left;
+    }
+    .choice:hover{border-color:#3a4052; transform:translateY(-1px);}
+    .choice.active{
+      border-color:var(--accent2);
+      box-shadow:0 0 0 2px rgba(0,212,165,.12) inset;
+      background:rgba(0,212,165,.06);
+    }
+    .choice-top{display:flex; flex-direction:column; gap:6px;}
+    .choice h3{margin:0; font-size:17px; line-height:1.35;}
+    .choice small{display:block; color:var(--muted); line-height:1.5; font-size:14px;}
+    .pick{
+      position:absolute; top:10px; right:10px; font-size:11px; padding:4px 8px;
+      border-radius:999px; background:#0b0d13; border:1px dashed #2f3444; color:#cfd5e4;
+    }
+    .hint{margin-top:auto; padding-top:10px; font-size:12px; color:#cfd5e4; opacity:.85;}
+
+    /* Inline Reflection Card */
+    .reflect-inline{
+      margin-top:14px; padding:16px; border-radius:14px;
+      background:#0f1118; border:1px solid var(--line);
+      display:none; gap:10px;
+      animation:reflectIn .25s ease;
+    }
+    .reflect-inline.show{ display:grid; }
+
+    @keyframes reflectIn{
+      from{opacity:0; transform:translateY(6px);}
+      to{opacity:1; transform:translateY(0);}
+    }
+
+    .reflect-chip{
+      display:inline-flex; align-items:center; gap:6px; font-size:12px; padding:6px 10px;
+      border-radius:999px; border:1px solid var(--line); background:#0b0d13; color:#cfd5e4;
+      width:max-content;
+    }
+    .reflect-title{margin:2px 0 0; font-size:19px; line-height:1.5;}
+    .reflect-desc{margin:0; line-height:1.7;}
+    .signal{
+      padding:12px; border-radius:12px; background:#0b0d13; border:1px dashed #2f3444;
+      font-size:14px; line-height:1.6; color:#d3d8e6;
+    }
+
+    /* Result */
+    #singleResult{
+      margin-top:12px; padding:16px; border-radius:14px;
+      background:#0f1118; border:1px solid var(--line);
+    }
+    #singleResult.highlight{
+      border-color:var(--accent);
+      box-shadow:0 0 0 2px rgba(124,92,255,.14) inset;
+      background:rgba(124,92,255,.06);
+    }
+    #resultTitle{margin:0 0 6px; font-size:19px; line-height:1.4;}
+    #resultDesc{margin:0 0 12px; line-height:1.7;}
+
+    .result-section{
+      margin-top:10px; padding-top:10px; border-top:1px dashed #2f3444;
+      display:grid; gap:6px;
+    }
+    .result-section h4{
+      margin:0; font-size:14px; letter-spacing:.2px; color:#dfe4f2;
+    }
+    .result-section ul{
+      margin:0; padding-left:16px; display:grid; gap:4px;
+      color:var(--muted); line-height:1.6;
+      font-size:14.5px;
+    }
+
+    /* --- JOBS (VERTICAL) --- */
+    .jobs-top{
+      display:flex; justify-content:space-between; align-items:end; gap:10px;
+    }
+    .jobs-list{
+      margin-top:10px;
+      display:grid; gap:10px;
+    }
+    .job-row{
+      background:#0f1118; border:1px solid var(--line); border-radius:14px; padding:14px;
+      display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center;
+    }
+    @media (max-width:720px){ .job-row{grid-template-columns:1fr;} }
+    .job-left{display:grid; gap:6px;}
+    .job-title{font-weight:800; font-size:17px;}
+    .job-meta{font-size:13px; color:var(--muted);}
+    .job-desc{font-size:14px; color:var(--muted); line-height:1.6;}
+    .badge{
+      font-size:12px; padding:6px 10px; border-radius:999px;
+      background:rgba(0,212,165,.07);
+      border:1px solid rgba(0,212,165,.55); color:#dffcf5;
+      width:max-content; justify-self:end;
+    }
+
+    /* --- PROOF (VERTICAL) --- */
+    .proof-stack{
+      margin-top:10px;
+      display:grid; gap:10px;
+    }
+    .proof-block{
+      background:#0f1118; border:1px solid var(--line); border-radius:14px; padding:16px;
+      display:grid; grid-template-columns:.35fr .65fr; gap:12px; align-items:center;
+    }
+    @media (max-width:820px){ .proof-block{grid-template-columns:1fr;} }
+    .proof-title{font-weight:800; font-size:18px; margin-bottom:6px;}
+    .proof-desc{font-size:14.5px; color:var(--muted); line-height:1.7;}
+
+    /* --- ENDING --- */
+    .ending{
+      text-align:center; padding:26px 18px;
+      background:linear-gradient(180deg, rgba(0,212,165,.06), transparent), var(--card);
+    }
+    .ending h2{font-size:22px; margin:0 0 8px;}
+    .ending p{margin:0 auto; max-width:740px; line-height:1.7;}
+    .ending .cta-row{justify-content:center;}
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="nav">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div class="ph circle">LOGO</div>
+        <div class="pill">Algocare Recruiting</div>
+      </div>
+      <nav class="nav-links">
+        <a href="#banner">Home</a>
+        <a href="#experience">의사결정 체험</a>
+        <a href="#jobs">열려있는 역할</a>
+        <a href="#proof">Algocare 이야기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- 1. Current Banner Area -->
+    <section id="banner">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <div>
+          <strong style="font-size:16px;">1) 현재 배너 영역</strong>
+          <div class="muted" style="font-size:14px; margin-top:4px;">(기존 배너/슬라이드/공지 자리)</div>
+        </div>
+        <div class="pill muted">Wireframe</div>
+      </div>
+      <div class="ph tall" style="margin-top:10px;">BANNER / KEY VISUAL PLACEHOLDER</div>
+    </section>
+
+    <!-- 2. Hero: Focus on Impact -->
+    <section id="hero" class="hero">
+      <div>
+        <div class="pill muted" style="width:max-content;">Focus on Impact</div>
+        <h1>우리는 임팩트가 큰 일을 찾고 실행합니다.</h1>
+        <p class="sub muted">
+          Algocare가 성장해온 방식은 언제나 같아요.<br/>
+          <strong>“더 큰 임팩트를 만들기 위해 무엇을 먼저 할 것인가.”</strong>
+        </p>
+
+        <div class="cta-row">
+          <button class="btn primary" id="goExperience">의사결정 체험하기</button>
+          <a class="btn" href="#jobs">채용공고 바로 보기</a>
+        </div>
+      </div>
+
+      <div class="ph tall">HERO IMAGE / VIDEO PLACEHOLDER</div>
+    </section>
+
+    <!-- 3. Bridge Copy + Gate -->
+    <section id="bridge">
+      <div class="bridge">
+        <div>
+          <h2>당신의 기준으로, Algocare의 다음 임팩트를 함께 설계해볼까요?</h2>
+          <p class="muted">
+            지금부터 짧은 의사결정 체험으로 <strong>Algocare의 일하는 기준과 성장 방식</strong>을
+            직접 느껴볼 수 있어요.
+          </p>
+        </div>
+        <div class="ph small" style="min-width:220px;">BRIDGE VISUAL</div>
+      </div>
+
+      <div class="gate">
+        <div>
+          <strong>의사결정 체험 게이트</strong><br/>
+          <small>3-Step 선택 → 단일 성장 트랙 결과</small>
+        </div>
+        <button class="btn primary" id="startExperienceBtn">바로 시작하기</button>
+      </div>
+    </section>
+
+    <!-- 3번 섹션: 아이디어2 체험(네 코드 실제 삽입) -->
+    <section id="experience">
+      <div class="story-wrap">
+        <div class="story-header">
+          <div class="pill">Algocare · Growth Track Story</div>
+          <div class="pill muted">Experience Prototype</div>
+        </div>
+
+        <div class="panel stage">
+
+          <!-- Opening View -->
+          <section id="view-opening" class="stage-view active hero">
+            <h1 class="story-h1">당신은 오늘, Algocare의 ‘다음 임팩트’를 여는 회의에 합류했습니다.</h1>
+            <p class="lead">
+              Algocare는 임팩트가 큰 문제를 찾고, 기준 있게 해결하며 성장해왔어요.<br/>
+              지금부터 3번의 선택으로, <strong>당신의 기준을 함께 확인해보고 싶습니다.</strong>
+            </p>
+
+            <div class="progress" aria-label="progress">
+              <div class="dot" id="dot1"></div>
+              <div class="dot" id="dot2"></div>
+              <div class="dot" id="dot3"></div>
+            </div>
+
+            <div style="margin-top:14px;">
+              <button class="btn primary" id="startBtn">의사결정 체험하기</button>
+            </div>
+          </section>
+
+          <!-- Step 1 View -->
+          <section id="view-step1" class="stage-view">
+            <div class="step-badge">Step 1</div>
+            <h2 class="story-h2">우리가 먼저 지켜야 할 케어의 기준은?</h2>
+            <p class="lead">
+              성장 기회가 열렸습니다. 더 빠르게 확장할 수도 있어요.<br/>
+              하지만 Algocare는 항상 <strong>“무엇을 먼저 지킬지”</strong>부터 결정해왔습니다.
+            </p>
+
+            <div class="choices" id="choices1">
+              <button class="choice" data-step="1" data-choice="A">
+                <span class="pick">A</span>
+                <div class="choice-top">
+                  <h3>품질과 신뢰를 먼저 고수한다</h3>
+                  <small>“속도보다 기준이 우선이다. 신뢰가 성장의 바닥이다.”</small>
+                </div>
+                <div class="hint">선택하면 아래 리플렉션 확인 →</div>
+              </button>
+
+              <button class="choice" data-step="1" data-choice="B">
+                <span class="pick">B</span>
+                <div class="choice-top">
+                  <h3>속도와 확장을 먼저 택한다</h3>
+                  <small>“지금 기회를 놓치면 안 된다. 곡선을 먼저 만든다.”</small>
+                </div>
+                <div class="hint">선택하면 아래 리플렉션 확인 →</div>
+              </button>
+            </div>
+
+            <div class="reflect-inline" id="reflect1">
+              <div class="reflect-chip">Step 1 리플렉션</div>
+              <h3 class="reflect-title" id="reflect1Title"></h3>
+              <p class="reflect-desc muted" id="reflect1Desc"></p>
+              <div class="signal" id="signal1"></div>
+              <div>
+                <button class="btn primary" id="reflect1Next">다음 선택으로</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Step 2 View -->
+          <section id="view-step2" class="stage-view">
+            <div class="step-badge">Step 2</div>
+            <h2 class="story-h2">불확실한 상황에서, 우리는 어떤 케어로 답할까요?</h2>
+            <p class="lead">
+              데이터와 현장 신호는 많은데, 결론은 아직 불완전합니다.<br/>
+              Algocare는 이럴 때 <strong>“어떻게 불확실성을 줄일지”</strong>를 먼저 정합니다.
+            </p>
+
+            <div class="choices" id="choices2">
+              <button class="choice" data-step="2" data-choice="A">
+                <span class="pick">A</span>
+                <div class="choice-top">
+                  <h3>작게 실험해 사실을 만든다</h3>
+                  <small>“작게 시도하고, 증거로 판단한다.”</small>
+                </div>
+                <div class="hint">선택하면 아래 리플렉션 확인 →</div>
+              </button>
+
+              <button class="choice" data-step="2" data-choice="B">
+                <span class="pick">B</span>
+                <div class="choice-top">
+                  <h3>맥락을 깊게 이해해 방향을 정한다</h3>
+                  <small>“현장의 맥락이 있어야 좋은 결정을 할 수 있다.”</small>
+                </div>
+                <div class="hint">선택하면 아래 리플렉션 확인 →</div>
+              </button>
+            </div>
+
+            <div class="reflect-inline" id="reflect2">
+              <div class="reflect-chip">Step 2 리플렉션</div>
+              <h3 class="reflect-title" id="reflect2Title"></h3>
+              <p class="reflect-desc muted" id="reflect2Desc"></p>
+              <div class="signal" id="signal2"></div>
+              <div>
+                <button class="btn primary" id="reflect2Next">마지막 선택으로</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Step 3 View -->
+          <section id="view-step3" class="stage-view">
+            <div class="step-badge">Step 3</div>
+            <h2 class="story-h2">좋은 성과를 “케어의 변화”로 정의한다면?</h2>
+            <p class="lead">
+              실험과 판단 끝에, 우리는 <strong>“좋은 성과가 무엇인지”</strong> 결정해야 합니다.<br/>
+              Algocare는 단기/장기 중 하나가 아니라, <strong>둘의 균형을 어떻게 잡을지</strong> 고민해왔어요.
+            </p>
+
+            <div class="choices" id="choices3">
+              <button class="choice" data-step="3" data-choice="A">
+                <span class="pick">A</span>
+                <div class="choice-top">
+                  <h3>지금의 임팩트를 먼저 증명한다</h3>
+                  <small>“지금의 변화가 다음 기회를 만든다.”</small>
+                </div>
+                <div class="hint">선택하면 아래 리플렉션 확인 →</div>
+              </button>
+
+              <button class="choice" data-step="3" data-choice="B">
+                <span class="pick">B</span>
+                <div class="choice-top">
+                  <h3>시간이 지나도 남는 가치를 만든다</h3>
+                  <small>“오래가는 변화가 진짜 성과다.”</small>
+                </div>
+                <div class="hint">선택하면 아래 리플렉션 확인 →</div>
+              </button>
+            </div>
+
+            <div class="reflect-inline" id="reflect3">
+              <div class="reflect-chip">Step 3 리플렉션</div>
+              <h3 class="reflect-title" id="reflect3Title"></h3>
+              <p class="reflect-desc muted" id="reflect3Desc"></p>
+              <div class="signal" id="signal3"></div>
+              <div>
+                <button class="btn primary" id="reflect3Next">결과 보기</button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Result View -->
+          <section id="view-result" class="stage-view">
+            <h2 style="margin:0 0 6px;">당신의 선택이 Algocare에서 열 수 있는 성장</h2>
+            <p class="lead">
+              방금의 선택 조합은 Algocare의 성장 방식과 닮아 있습니다.<br/>
+              이 팀에 합류한다면, <strong>당신이 가장 많이 경험하게 될 성장/배움</strong>은 아래와 같아요.
+            </p>
+
+            <div id="singleResult" class="highlight">
+              <h3 id="resultTitle"></h3>
+              <p id="resultDesc" class="muted"></p>
+
+              <div class="result-section">
+                <h4>이 팀에서 배우게 되는 것</h4>
+                <ul id="learnList"></ul>
+              </div>
+
+              <div class="result-section">
+                <h4>실제로 하게 될 일</h4>
+                <ul id="doList"></ul>
+              </div>
+
+              <small class="muted" id="resultKey" style="display:block; margin-top:10px;"></small>
+            </div>
+
+            <div style="margin-top:12px;">
+              <button class="btn" id="resetBtn">다시 해보기</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Jobs (Immersion Safe) - VERTICAL -->
+    <section id="jobs">
+      <div class="jobs-top">
+        <div>
+          <strong style="font-size:16px;">4) 공고 노출(몰입 유지형)</strong>
+          <div class="muted" style="font-size:14px; margin-top:4px;">
+            결과 카드 아래에 “가까운 포지션” 표시 + 요약 리스트 → 전체는 버튼
+          </div>
+        </div>
+        <a class="btn" href="#all-jobs">전체 포지션 보기</a>
+      </div>
+
+      <div class="jobs-list">
+        <div class="job-row">
+          <div class="job-left">
+            <div class="job-title">Position Title A</div>
+            <div class="job-meta">팀 · 직군 · 경력</div>
+            <div class="job-desc">요약 설명 1~2줄 자리</div>
+          </div>
+          <div class="badge">당신의 트랙과 가까움</div>
+        </div>
+
+        <div class="job-row">
+          <div class="job-left">
+            <div class="job-title">Position Title B</div>
+            <div class="job-meta">팀 · 직군 · 경력</div>
+            <div class="job-desc">요약 설명 1~2줄 자리</div>
+          </div>
+        </div>
+
+        <div class="job-row">
+          <div class="job-left">
+            <div class="job-title">Position Title C</div>
+            <div class="job-meta">팀 · 직군 · 경력</div>
+            <div class="job-desc">요약 설명 1~2줄 자리</div>
+          </div>
+        </div>
+
+        <div class="job-row">
+          <div class="job-left">
+            <div class="job-title">Position Title D</div>
+            <div class="job-meta">팀 · 직군 · 경력</div>
+            <div class="job-desc">요약 설명 1~2줄 자리</div>
+          </div>
+        </div>
+
+        <div class="job-row">
+          <div class="job-left">
+            <div class="job-title">Position Title E</div>
+            <div class="job-meta">팀 · 직군 · 경력</div>
+            <div class="job-desc">요약 설명 1~2줄 자리</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ph small" id="all-jobs" style="margin-top:12px;">
+        (전체 공고 리스트 영역 PLACEHOLDER / 별도 페이지 연결 가능)
+      </div>
+    </section>
+
+    <!-- 5. Proof / History - VERTICAL -->
+    <section id="proof">
+      <strong style="font-size:16px;">5) 성장/신뢰 근거 섹션</strong>
+      <div class="muted" style="font-size:14px; margin-top:4px;">
+        “이 성장과 배움을 실제로 수행해온 Algocare의 역사”
+      </div>
+
+      <div class="proof-stack">
+        <div class="proof-block">
+          <div class="ph tall">투자/성과 VISUAL</div>
+          <div>
+            <div class="proof-title">투자 & 성장</div>
+            <div class="proof-desc">
+              라운드/성장 스토리 요약. 숫자/타임라인/하이라이트를 길게 풀어 쓸 자리.
+            </div>
+          </div>
+        </div>
+
+        <div class="proof-block">
+          <div class="ph tall">협업 로고 / 사례 VISUAL</div>
+          <div>
+            <div class="proof-title">대기업 협업</div>
+            <div class="proof-desc">
+              함께한 파트너/레퍼런스/프로젝트 임팩트 내용을 길게 스토리로 설명.
+            </div>
+          </div>
+        </div>
+
+        <div class="proof-block">
+          <div class="ph tall">사용자 임팩트 VISUAL</div>
+          <div>
+            <div class="proof-title">사용자 임팩트</div>
+            <div class="proof-desc">
+              실제로 만들어낸 변화(후기/지표/장면)를 서사형으로 넣기 좋은 자리.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Ending + Next Step -->
+    <section id="ending" class="ending">
+      <h2>이 성장과 배움을, 실제로 함께 만들어가고 싶다면</h2>
+      <p class="muted">
+        Algocare는 더 큰 임팩트를 만들기 위해<br/>
+        <strong>기준 있는 성장</strong>을 선택할 사람을 기다립니다.
+      </p>
+
+      <div class="cta-row" style="margin-top:14px;">
+        <a class="btn" href="#proof">팀 소개 보기</a>
+        <a class="btn primary" href="#jobs">지원 가능한 역할 보기</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    /* ===========================
+       GLOBAL SCROLL CTA
+       =========================== */
+    const go1 = document.getElementById("goExperience");
+    const go2 = document.getElementById("startExperienceBtn");
+    const exp = document.getElementById("experience");
+    function scrollToExp(){
+      exp.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    go1.addEventListener("click", scrollToExp);
+    go2.addEventListener("click", scrollToExp);
+
+    /* ===========================
+       IDEA2 SCRIPT (네 코드 그대로)
+       =========================== */
+    const views = {
+      opening: document.getElementById("view-opening"),
+      step1: document.getElementById("view-step1"),
+      step2: document.getElementById("view-step2"),
+      step3: document.getElementById("view-step3"),
+      result: document.getElementById("view-result"),
+    };
+
+    const dots = [
+      document.getElementById("dot1"),
+      document.getElementById("dot2"),
+      document.getElementById("dot3")
+    ];
+
+    const picks = {1:null,2:null,3:null};
+
+    const reflectData = {
+      1: {
+        A: {
+          title: "당신은 ‘신뢰를 먼저 지키는 케어’를 선택했어요.",
+          desc: "Algocare는 사용자에게 닿는 변화가 오래가려면 기준과 신뢰가 바닥이 되어야 한다고 믿습니다.",
+          signal: "현장 시그널: 신규 전환율보다 ‘재구매/꾸준함’이 건강관리 핵심 지표로 확인됨."
+        },
+        B: {
+          title: "당신은 ‘기회를 놓치지 않는 케어’를 선택했어요.",
+          desc: "Algocare는 필요한 순간을 빠르게 잡아 실행하는 속도가 더 큰 임팩트를 여는 열쇠라고 봅니다.",
+          signal: "현장 시그널: 특정 고객군 사용 시간대/빈도 급증 → 빠른 확장 기회 발생."
+        }
+      },
+      2: {
+        A: {
+          title: "당신은 ‘작게 실험하며 배우는 케어’를 선택했어요.",
+          desc: "Algocare는 불확실한 문제를 ‘작은 검증’으로 줄여가며 학습 속도를 높입니다.",
+          signal: "현장 시그널: 2주 단위 미니 실험으로 조합 변경 → 체감 만족도 상승 패턴 확인."
+        },
+        B: {
+          title: "당신은 ‘맥락을 깊게 이해하는 케어’를 선택했어요.",
+          desc: "Algocare는 사용자의 진짜 문제를 잡기 위해 현장/데이터/인터뷰를 함께 봅니다.",
+          signal: "현장 시그널: 수치상 동일한 문제라도 사용자 맥락에 따라 원인이 다른 케이스 다수."
+        }
+      },
+      3: {
+        A: {
+          title: "당신은 ‘지금의 변화를 증명하는 케어’를 선택했어요.",
+          desc: "Algocare는 ‘바로 체감되는 개선’이 다음 단계 임팩트를 키운다고 믿습니다.",
+          signal: "현장 시그널: 1차 개선 직후 활성/재방문 지표 급상승 → 임팩트가 재투자로 연결."
+        },
+        B: {
+          title: "당신은 ‘오래 남는 변화를 만드는 케어’를 선택했어요.",
+          desc: "Algocare는 단기 지표보다 ‘지속 가능한 습관/시스템’이 진짜 성과라고 봅니다.",
+          signal: "현장 시그널: 꾸준함을 만드는 기능/조합이 장기 LTV에 가장 큰 영향."
+        }
+      }
+    };
+
+    const comboMap = {
+      "AAA": {
+        title: "기준을 세우고, 실험으로 학습하며, 임팩트를 증명하는 성장",
+        desc: "신뢰의 바닥 위에서 빠른 실험을 돌리고, 사용자에게 바로 닿는 변화를 만듭니다.",
+        learn: [
+          "품질/신뢰 기준을 설계하는 의사결정",
+          "작은 실험을 ‘학습 장치’로 만드는 방법",
+          "지표·체감이 함께 오르는 임팩트 구조"
+        ],
+        do: [
+          "제품/개인화 기능 가설 수립 및 실험",
+          "사용자 신뢰를 해치지 않는 개선 설계",
+          "임팩트 큰 문제를 실행으로 연결"
+        ]
+      },
+      "AAB": {
+        title: "신뢰를 지키며, 실험으로 배우고, 오래 남는 가치를 만드는 성장",
+        desc: "빠른 학습 속도를 유지하면서도 장기적 기준과 지속가치를 놓치지 않습니다.",
+        learn: [
+          "신뢰 기반 제품/데이터 기준 수립",
+          "실험을 장기 최적화 관점으로 해석",
+          "지속가능한 사용자 습관/가치 설계"
+        ],
+        do: [
+          "개선 실험 반복 + 장기 효용 검증",
+          "기준을 지키는 품질/안전 체계 강화",
+          "유지/꾸준함 구조 설계"
+        ]
+      },
+      "ABA": {
+        title: "신뢰의 기준 위에서 본질을 잡고, 확실한 임팩트를 내는 성장",
+        desc: "문제의 맥락을 깊게 정의한 뒤, 가장 먼저 닿는 변화를 구현합니다.",
+        learn: [
+          "문제의 본질/맥락 정의 프레임",
+          "신뢰 기준과 제품 방향 정렬",
+          "정의된 방향을 임팩트로 전환"
+        ],
+        do: [
+          "현장/사용자 리서치 기반 문제 정의",
+          "핵심 문제를 기준과 정렬",
+          "체감 임팩트가 나는 경험 설계"
+        ]
+      },
+      "ABB": {
+        title: "신뢰와 본질을 지키며, 지속가능한 가치를 쌓는 성장",
+        desc: "흔들리지 않는 방향을 세우고 장기 가치 구조를 만듭니다.",
+        learn: [
+          "신뢰/품질 기반 성장 전략",
+          "맥락 기반 장기 문제정의",
+          "지속가능한 시스템 설계"
+        ],
+        do: [
+          "장기 로드맵/우선순위 수립",
+          "맥락 기반 개선 설계",
+          "지속가치 구조 구축"
+        ]
+      },
+      "BAA": {
+        title: "기회를 빨리 잡고, 실험으로 배우며, 임팩트를 키우는 성장",
+        desc: "확장 속도를 살리면서도 실험으로 성공 확률을 높입니다.",
+        learn: [
+          "성장 기회를 실행하는 속도",
+          "실험으로 방향 보정",
+          "단기 임팩트→확장 구조"
+        ],
+        do: [
+          "유효 성장 기회 즉시 실행",
+          "실험 기반 개선",
+          "임팩트 지표 증명/확대"
+        ]
+      },
+      "BAB": {
+        title: "확장 속도 위에서 배우고, 지속가능한 가치를 설계하는 성장",
+        desc: "빠르게 커지면서도 오래 남는 구조를 함께 만듭니다.",
+        learn: [
+          "속도와 장기 기준의 균형",
+          "실험을 장기 최적화로 연결",
+          "확장 속 지속 구조 설계"
+        ],
+        do: [
+          "확장 실행 + 실험으로 리스크 최소화",
+          "장기 가치 지표 설계",
+          "지속 가능한 경험 구조 구축"
+        ]
+      },
+      "BBA": {
+        title: "확장 속도 위에서 본질을 다시 잡고, 임팩트를 증명하는 성장",
+        desc: "기회를 잡되 맥락을 재정의하며 임팩트를 만듭니다.",
+        learn: [
+          "속도 상황에서 문제 재정의",
+          "맥락 기반 방향 재정렬",
+          "즉시 체감 임팩트 창출"
+        ],
+        do: [
+          "확장 국면 우선순위 재정렬",
+          "현장/데이터 방향 보정",
+          "빠른 임팩트 개선 실행"
+        ]
+      },
+      "BBB": {
+        title: "빠른 성장 속에서도 본질과 지속가치를 놓치지 않는 성장",
+        desc: "기회를 놓치지 않되 오래 남는 방향을 끝까지 지킵니다.",
+        learn: [
+          "확장 국면 장기 기준 수립",
+          "본질 중심 문제 정의",
+          "지속 가치/시스템 구축"
+        ],
+        do: [
+          "확장 선점 + 장기 리스크 관리",
+          "문제 본질 잡아 방향 고도화",
+          "습관/가치 구조 설계"
+        ]
+      }
+    };
+
+    function showView(name){
+      Object.values(views).forEach(v=>v.classList.remove("active"));
+      views[name].classList.add("active");
+    }
+    function setDot(n){
+      dots.forEach((d,i)=> d.classList.toggle("on", i < n));
+    }
+
+    document.getElementById("startBtn").addEventListener("click", ()=>{
+      showView("step1"); setDot(0);
+    });
+
+    function wireChoices(containerId, stepNum, reflectBoxId, onNext){
+      const container = document.getElementById(containerId);
+      const buttons = [...container.querySelectorAll(".choice")];
+      const reflectBox = document.getElementById(reflectBoxId);
+
+      buttons.forEach(btn=>{
+        btn.addEventListener("click", ()=>{
+          buttons.forEach(b=>b.classList.remove("active"));
+          btn.classList.add("active");
+
+          const choice = btn.dataset.choice;
+          picks[stepNum] = choice;
+
+          const d = reflectData[stepNum][choice];
+          reflectBox.querySelector(".reflect-title").textContent = d.title;
+          reflectBox.querySelector(".reflect-desc").textContent = d.desc;
+          reflectBox.querySelector(".signal").textContent = d.signal;
+
+          reflectBox.classList.add("show");
+          reflectBox.scrollIntoView({behavior:"smooth", block:"nearest"});
+        });
+      });
+
+      reflectBox.querySelector("button").addEventListener("click", onNext);
+    }
+
+    wireChoices("choices1", 1, "reflect1", ()=>{
+      showView("step2"); setDot(1);
+      document.getElementById("reflect2").classList.remove("show");
+      document.getElementById("reflect3").classList.remove("show");
+    });
+
+    wireChoices("choices2", 2, "reflect2", ()=>{
+      showView("step3"); setDot(2);
+      document.getElementById("reflect3").classList.remove("show");
+    });
+
+    wireChoices("choices3", 3, "reflect3", ()=>{
+      applyResults();
+      showView("result"); setDot(3);
+    });
+
+    function applyResults(){
+      const key = `${picks[1]}${picks[2]}${picks[3]}`;
+      const r = comboMap[key];
+
+      const titleEl = document.getElementById("resultTitle");
+      const descEl = document.getElementById("resultDesc");
+      const keyEl = document.getElementById("resultKey");
+      const learnList = document.getElementById("learnList");
+      const doList = document.getElementById("doList");
+
+      if(!r){
+        titleEl.textContent = "결과를 계산 중이에요";
+        descEl.textContent = "";
+        learnList.innerHTML = doList.innerHTML = "";
+        keyEl.textContent = "";
+        return;
+      }
+
+      titleEl.textContent = r.title;
+      descEl.textContent = r.desc;
+      keyEl.textContent = `선택 조합: ${key}`;
+
+      function fillList(el, arr){
+        el.innerHTML = "";
+        arr.forEach(t=>{
+          const li = document.createElement("li");
+          li.textContent = t;
+          el.appendChild(li);
+        });
+      }
+      fillList(learnList, r.learn);
+      fillList(doList, r.do);
+    }
+
+    document.getElementById("resetBtn").addEventListener("click", ()=>{
+      picks[1]=picks[2]=picks[3]=null;
+      document.querySelectorAll(".choice").forEach(b=>b.classList.remove("active"));
+      ["reflect1","reflect2","reflect3"].forEach(id=>{
+        document.getElementById(id).classList.remove("show");
+      });
+      setDot(0);
+      showView("opening");
+    });
+  </script>
+
+</body>
+</html>
